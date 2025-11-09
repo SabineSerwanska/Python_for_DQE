@@ -1,0 +1,21 @@
+city= Minsk
+text= Car accident on 50 road. You must be careful. The road is temporarily closed.
+
+expiration_date= 2025-12-23
+text= I am selling my 2020 skoda fabia. Phone number: 004215464687. Price: $10,000.
+
+job_title= Java Developer
+description= We are looking for an ambitious person to join our company. If you are interested, please contact us.
+salary_brutto_in_US= 2000
+initial_valid_days= 30
+
+city= Gdansk
+text= Car accident on 34 road. You must be careful. The road is temporarily closed.
+
+expiration_date= 2026-01-15
+text= I am selling my 2018 skoda rapid. Phone number: 004215464687. Price: $10,000.
+
+job_title= Doctor
+description= We are looking for an ambitious person to join our company. If you are interested, please contact us.
+salary_brutto_in_US= 3000
+initial_valid_days= 30

@@ -1,0 +1,28 @@
+Title: News
+Publish date: 2025-11-09
+City: Cracow
+Text: Car accident on 66 road.
+You must be careful.
+The road is temporarily closed.
+
+Title: Private ad
+Days left: 51
+Text: I am selling my 2020 skoda fabia.
+Phone number: 004215464687.
+Price: $10,000.
+
+Title: Job ad
+Job title: Junior manager
+Description: We are looking for an ambitious person to join our company.
+If you are interested, please contact us.
+Salary: $2000
+Valid for: 30 days
+
+Title: News
+Publish date: 2025-11-09
+City: Berlin
+Text: The elections are coming up.
+Don't forget to vote.
+
+
+

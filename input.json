@@ -1,0 +1,30 @@
+[
+  {
+    "city": "Poznan",
+    "text": "Traffic jam on highway A2. Please use alternative routes. The road is partially open."
+  },
+  {
+    "expiration_date": "2025-11-30",
+    "text": "Selling my 2019 Toyota Corolla. Phone number: 004212345678. Price: $12,500."
+  },
+  {
+    "job_title": "Python Developer",
+    "description": "Join our innovative team! If you are passionate about coding, apply now.",
+    "salary_brutto_in_US": "3500",
+    "initial_valid_days": "45"
+  },
+  {
+    "city": "Wroclaw",
+    "text": "Heavy rain expected tomorrow. Please drive carefully and check weather updates."
+  },
+  {
+    "expiration_date": "2026-02-20",
+    "text": "Offering a used laptop Dell XPS 13. Phone number: 004298765432. Price: $800."
+  },
+  {
+    "job_title": "Data Analyst",
+    "description": "We are seeking a detail-oriented analyst. If interested, send your CV.",
+    "salary_brutto_in_US": "2800",
+    "initial_valid_days": "60"
+  }
+]

@@ -16,10 +16,14 @@ def text_normalizer(text):
     # 2. Split into sentences (keeping period/exclamation/question marks)
     sentences = re.split(r'([.!?])', text_lower)
     result = []
-    for s in range(0, len(sentences) - 1, 2):
-        sentence = sentences[s].strip().capitalize() + sentences[s + 1]
-        result.append(sentence)
-    normalized = ' '.join(result)
+    if len(sentences) == 1:  # No punctuation found
+        # Just capitalize the whole text and add to result
+        normalized = sentences[0].strip().capitalize() + '.'
+    else:
+        for s in range(0, len(sentences) - 1, 2):
+            sentence = sentences[s].strip().capitalize() + sentences[s + 1]
+            result.append(sentence)
+        normalized = ' '.join(result)
 
     # 3. Replace "iz" with "is" (only as a separate word, not in quotes)
     normalized = re.sub(r'(?<!“)\biz\b(?!“)', 'is', normalized, flags=re.IGNORECASE)

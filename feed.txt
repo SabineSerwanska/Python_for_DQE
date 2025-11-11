@@ -26,3 +26,42 @@ Don't forget to vote.
 
 
 
+Title: News
+Publish date: 2025-11-11
+City: Poznan
+Text: Traffic jam on highway a2.
+Please use alternative routes.
+The road is partially open.
+
+Title: Private ad
+Days left: 19
+Text: Selling my 2019 toyota corolla.
+Phone number: 004212345678.
+Price: $12,500.
+
+Title: Job ad
+Job title: Python Developer
+Description: Join our innovative team!
+If you are passionate about coding, apply now.
+Salary: $3500
+Valid for: 45 days
+
+Title: News
+Publish date: 2025-11-11
+City: Wroclaw
+Text: Heavy rain expected tomorrow.
+Please drive carefully and check weather updates.
+
+Title: Private ad
+Days left: 101
+Text: Offering a used laptop dell xps 13.
+Phone number: 004298765432.
+Price: $800.
+
+Title: Job ad
+Job title: Data Analyst
+Description: We are seeking a detail-oriented analyst.
+If interested, send your cv.
+Salary: $2800
+Valid for: 60 days
+

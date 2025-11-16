@@ -1,0 +1,30 @@
+<records>
+    <news>
+        <city>Krakow</city>
+        <text>Major traffic delays on highway S7. Please avoid the area. The road is closed for repairs.</text>
+    </news>
+    <private_ad>
+        <expiration_date>2025-10-15</expiration_date>
+        <text>For sale: 2021 Ford Focus. Contact: 004212345678. Price: $13,000.</text>
+    </private_ad>
+    <job_ad>
+        <job_title>Frontend Developer</job_title>
+        <description>We are searching for a creative developer to join our web team. Apply if you love modern JS frameworks.</description>
+        <salary_brutto_in_us>4000</salary_brutto_in_us>
+        <initial_valid_days>60</initial_valid_days>
+    </job_ad>
+    <news>
+        <city>Wroclaw</city>
+        <text>Heavy rain expected this weekend. Please check weather updates before traveling.</text>
+    </news>
+    <private_ad>
+        <expiration_date>2026-03-01</expiration_date>
+        <text>Used MacBook Pro for sale. Contact: 004298765432. Price: $950.</text>
+    </private_ad>
+    <job_ad>
+        <job_title>Project Manager</job_title>
+        <description>Looking for an experienced manager to lead our new project. If interested, send your resume.</description>
+        <salary_brutto_in_us>5000</salary_brutto_in_us>
+        <initial_valid_days>45</initial_valid_days>
+    </job_ad>
+</records>

@@ -23,6 +23,11 @@ def text_normalizer(text):
         for s in range(0, len(sentences) - 1, 2):
             sentence = sentences[s].strip().capitalize() + sentences[s + 1]
             result.append(sentence)
+        if len(sentences) % 2 != 0 and sentences[-1].strip():
+            last = sentences[-1].strip().capitalize()
+            if not re.search(r'[.!?]$', last):
+                last += '.'
+            result.append(last)
         normalized = ' '.join(result)
 
     # 3. Replace "iz" with "is" (only as a separate word, not in quotes)

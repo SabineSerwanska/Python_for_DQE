@@ -5,6 +5,8 @@ from HW_6_text_normalizer import text_normalizer  # Import the text normalizatio
 import re  # Import regular expressions for text splitting
 import os  # Import os module for file operations
 import json
+import xml.etree.ElementTree as ET
+
 
 class News:
     def __init__(self, text, city):
@@ -21,8 +23,9 @@ class News:
         if len(sentences) == 1:  # No punctuation found
             result.append(sentences[0].strip().capitalize())
         else:
-            for s in range(0, len(sentences) -1 , 2):  # Loop through sentences in pairs (sentence + punctuation)
-                sentence = sentences[s].strip().capitalize() + sentences[s+1]  # Capitalize first letter and add punctuation
+            for s in range(0, len(sentences) - 1, 2):  # Loop through sentences in pairs (sentence + punctuation)
+                sentence = sentences[s].strip().capitalize() + sentences[
+                    s + 1]  # Capitalize first letter and add punctuation
                 result.append(sentence)  # Add the formatted sentence to the result list
 
         formetted_text = '\n'.join(result)  # Join sentences with new lines
@@ -47,7 +50,8 @@ class Private_ad:
     def __init__(self, text, expiration_date):
         self.type = "Private ad"  # Set the type as Private ad
         self.text = text_normalizer(text)  # Normalize and store the ad text
-        self.expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()  # Parse and store the expiration date
+        self.expiration_date = datetime.strptime(expiration_date,
+                                                 "%Y-%m-%d").date()  # Parse and store the expiration date
         self.days_left = (self.expiration_date - date.today()).days  # Calculate and store days left
 
     def add_text(self):
@@ -83,7 +87,8 @@ class Job_ad:
         self.job_title = job_title  # Store the job title
         self.text = text_normalizer(text)  # Normalize and store the job description
         self.salary = salary  # Store the salary
-        self.expiration_date = date.today() + timedelta(days=int(initial_valid_days))  # Calculate and store expiration date
+        self.expiration_date = date.today() + timedelta(
+            days=int(initial_valid_days))  # Calculate and store expiration date
         self.days_left = (self.expiration_date - date.today()).days  # Calculate and store days left
 
     def add_text(self):
@@ -115,7 +120,7 @@ class Job_ad:
             file.write("\n\n")  # Add an empty line after the job ad
 
 
-class Add_from_files:
+class Add_from_txt:
     def __init__(self, path):
         if path.lower() == 'default':  # If user enters 'default', use 'input.txt'
             self.path = 'input.txt'
@@ -147,14 +152,14 @@ class Add_from_files:
 
 class Add_from_json:
     def __init__(self, path):
-        if path.lower() == 'default':  # If user enters 'default', use 'input.txt'
+        if path.lower() == 'default':  # If user enters 'default', use 'input.json'
             self.path = 'input.json'
         else:
             self.path = path  # Otherwise, use the provided path
 
     def read_file(self):
-        dicts = []  # Create an empty list to store dictionaries
-        blok = {}  # Create an empty dictionary for each record
+        # dicts = []  # Create an empty list to store dictionaries
+        # blok = {}  # Create an empty dictionary for each record
         with open(self.path, 'r', encoding='utf-8') as file:  # Open the input file for reading
             data = json.load(file)
 
@@ -165,6 +170,28 @@ class Add_from_json:
             os.remove(self.path)  # Remove the file
 
 
+class Add_from_xml:  # Defines a class for handling XML file input
+    def __init__(self, path):  # Constructor that takes the file path as an argument
+        if path.lower() == 'default':  # If the user enters 'default'
+            self.path = 'input.xml'  # Set the default file path to 'input.xml'
+        else:
+            self.path = path  # Otherwise, use the provided file path
+
+    def read_file(self):  # Method to read and process the XML file
+        tree = ET.parse(self.path)  # Parse the XML file and create an element tree
+        root = tree.getroot()  # Get the root element of the XML tree
+        dicts = []  # Initialize an empty list to store records as dictionaries
+        for child in root:  # Iterate over each direct child of the root
+            blok = {"type": child.tag.lower()}  # Create a dictionary with the type (child tag name)
+            for subchild in child:  # Iterate over each sub-element (field) of the child
+                blok[subchild.tag.lower()] = subchild.text.strip() if subchild.text else ""  # Add the field to the dictionary, stripping whitespace or using an empty string if no text
+            dicts.append(blok)  # Add the dictionary (record) to the list
+        return dicts  # Return the list of dictionaries containing the XML data
+
+    def remove_file(self):
+        if os.path.exists(self.path):  # If the file exists
+            os.remove(self.path)  # Remove the file
+
 
 while True:  # Infinite loop for user input
     news_type = input("Hello! Welcome in our tool for adding News or Private Ad or Job Ad to our News Feed. \n"
@@ -172,8 +199,9 @@ while True:  # Infinite loop for user input
                       "1 - News\n "
                       "2 - Private_ad\n "
                       "3 - Job_ad \n"
-                      "F - Add from file\n"
+                      "F - Add from txt file\n"
                       "JSON - Add from json file\n"
+                      "XML - Add from XML file\n"
                       "To quit enter - 'q' \n"
                       "Your choose option: ")  # Prompt user for input
 
@@ -181,10 +209,12 @@ while True:  # Infinite loop for user input
         print("Quiting program. See you next time!")  # Print exit message
         break  # Exit the loop
 
+
     elif news_type.lower() == "f":  # If user selects file input
-        print('You will add your feed from file!')  # Inform user about file input
-        path = input("Provide the path to input file or type 'default' if file is in current folder as 'input.txt': ")  # Get file path
-        configs = Add_from_files(path)  # Create Add_from_files object
+        print('You will add your feed from txt file!')  # Inform user about file input
+        path = input(
+            "Provide the path to input file or type 'default' if file is in current folder as 'input.txt': ")  # Get file path
+        configs = Add_from_txt(path)  # Create Add_from_files object
         try:
             dicts = configs.read_file()  # Try to read records from file
         except FileNotFoundError:
@@ -196,17 +226,21 @@ while True:  # Infinite loop for user input
                 ad = News(text=my_dict['text'], city=my_dict['city'])  # Create News object
                 ad.add_text()  # Save news to file
             elif {'expiration_date', 'text'} <= keys:  # If it's a Private ad
-                ad = Private_ad(text=my_dict['text'], expiration_date=my_dict['expiration_date'])  # Create Private_ad object
+                ad = Private_ad(text=my_dict['text'],
+                                expiration_date=my_dict['expiration_date'])  # Create Private_ad object
                 ad.add_text()  # Save ad to file
             elif {'job_title', 'description', 'salary_brutto_in_us', 'initial_valid_days'} <= keys:  # If it's a Job ad
                 ad = Job_ad(job_title=my_dict['job_title'], text=my_dict['description'],
-                            salary=my_dict['salary_brutto_in_us'], initial_valid_days=my_dict['initial_valid_days'])  # Create Job_ad object
+                            salary=my_dict['salary_brutto_in_us'],
+                            initial_valid_days=my_dict['initial_valid_days'])  # Create Job_ad object
                 ad.add_text()  # Save job ad to file
         configs.remove_file()  # Remove the file after processing
 
+
     elif news_type.lower() == "json":  # Check if user selected JSON file input
         print('You will add your feed from JSON!')  # Inform the user about JSON input
-        path = input("Provide the path to input file or type 'default' if file is in current folder as 'input.json': ")  # Ask for file path
+        path = input(
+            "Provide the path to input file or type 'default' if file is in current folder as 'input.json': ")  # Ask for file path
         configs = Add_from_json(path)  # Create an Add_from_json object with the given path
         try:
             dicts = configs.read_file()  # Try to read records from the JSON file
@@ -228,7 +262,8 @@ while True:  # Infinite loop for user input
                                     expiration_date=my_dict['expiration_date'])  # Create Private_ad object
                     ad.add_text()  # Save ad to file
 
-                elif {'job_title', 'description', 'salary_brutto_in_us', 'initial_valid_days'} <= job_keys:  # Check if it's a Job ad
+                elif {'job_title', 'description', 'salary_brutto_in_us',
+                      'initial_valid_days'} <= job_keys:  # Check if it's a Job ad
                     salary_key = next((k for k in my_dict if k.lower() == 'salary_brutto_in_us'),
                                       None)  # Find salary key regardless of case
                     ad = Job_ad(
@@ -248,6 +283,44 @@ while True:  # Infinite loop for user input
 
         configs.remove_file()  # Remove the JSON file after processing
 
+
+    elif news_type.lower() == "xml":  # Check if user selected JSON file input
+        print('You will add your feed from XML!')  # Inform the user about JSON input
+        path = input(
+            "Provide the path to input file or type 'default' if file is in current folder as 'input.xml': ")  # Ask for file path
+        configs = Add_from_xml(path)  # Create an Add_from_json object with the given path
+        try:
+            dicts = configs.read_file()  # Try to read records from the XML file
+        except FileNotFoundError:
+            print("File not found!")  # Print error if file does not exist
+            continue  # Return to menu
+        except ET.ParseError:
+            print("XML format error! Please check your file.")
+            continue
+
+        for idx, my_dict in enumerate(dicts, 1):
+            job_keys = set(my_dict.keys())
+            if my_dict.get('type') == 'news' and {'city', 'text'} <= job_keys:
+                ad = News(text=my_dict['text'], city=my_dict['city'])
+                ad.add_text()
+            elif my_dict.get('type') == 'private_ad' and {'expiration_date', 'text'} <= job_keys:
+                ad = Private_ad(text=my_dict['text'], expiration_date=my_dict['expiration_date'])
+                ad.add_text()
+            elif my_dict.get('type') == 'job_ad' and {'job_title', 'description', 'salary_brutto_in_us',
+                                                      'initial_valid_days'} <= job_keys:
+                ad = Job_ad(
+                    job_title=my_dict['job_title'],
+                    text=my_dict['description'],
+                    salary=my_dict['salary_brutto_in_us'],
+                    initial_valid_days=my_dict['initial_valid_days']
+                )
+                ad.add_text()
+            else:
+                print(f"Record {idx}: Missing required field(s) or wrong format.")
+
+        configs.remove_file()  # Remove the XML file after processing
+
+
     elif news_type == "1":  # If user selects News
         print('You will add your News! You will be asked about providing City and News Text')  # Inform user
         city = input("Provide city name:\n")  # Get city from user
@@ -255,8 +328,10 @@ while True:  # Infinite loop for user input
         ad = News(text, city)  # Create News object
         ad.add_text()  # Save news to file
 
+
     elif news_type == "2":  # If user selects Private ad
-        print('You will add your Private_ad! You will be asked about Expiration Date and Private ad Text')  # Inform user
+        print(
+            'You will add your Private_ad! You will be asked about Expiration Date and Private ad Text')  # Inform user
         while True:  # Loop for date validation
             expiration_date = input("Provide expiration date in format YYYY-MM-DD: ")  # Get expiration date from user
             try:
@@ -268,12 +343,13 @@ while True:  # Infinite loop for user input
         ad = Private_ad(text, expiration_date)  # Create Private_ad object
         ad.add_text()  # Save ad to file
 
+
     elif news_type == "3":  # If user selects Job ad
-        print('You will add your Job_ad! You will be asked about Job title and Job description and Salary and Expiration Date')  # Inform user
+        print(
+            'You will add your Job_ad! You will be asked about Job title and Job description and Salary and Expiration Date')  # Inform user
         job_title = input("Provide Job title: ")  # Get job title from user
         salary = input("Provide salary brutto in $: ")  # Get salary from user
         initial_valid_days = input("Provide initial_valid_days: ")  # Get number of valid days from user
         text = input("Provide Job description: ")  # Get job description from user
         ad = Job_ad(job_title, text, salary, initial_valid_days)  # Create Job_ad object
         ad.add_text()  # Save job ad to file
-        
